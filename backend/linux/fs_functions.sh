@@ -27,8 +27,16 @@ else
     echo $size,$pSize
     percentParent=$((100 * $size/$pSize ))
 fi
-lastModified=`stat -f "%Sm" $dirPath`
-lastAccessed=`stat -f "%Sa" $dirPath`
-owner=`stat -f "%Su" $dirPath`
+fsOS=`uname`
+if [ $fsOS != 'Linux' ]
+then
+    lastModified=`stat -f "%Sm" $dirPath`
+    lastAccessed=`stat -f "%Sa" $dirPath`
+    owner=`stat -f "%Su" $dirPath`
+else
+    lastModified=`stat --format="%y" $dirPath`
+    lastAccessed=`stat --format="%x" $dirPath`
+    owner=`stat --format="%U" $dirPath`
+fi
 echo Path,Size,No Of Files,No of Directories,percent of Parent,Last Modified,Last Accessed,Owner
 echo $dirPath,$size,$nFiles,$nDirectories,$percentParent,$lastModified,$lastAccessed,$owner
