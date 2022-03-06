@@ -1,10 +1,12 @@
 #!/bin/bash
 
-# this function generates below details about the path passed as a parameter
-# size, number of files, number of folders, % of parent, last modified, last accessed, owner
+# this script generates below details about the path passed as a parameter
+# Path,Size,No Of Files,No of Directories,percent of Parent,Last Modified,Last Accessed,Owner
 # https://dextutor.com/difference-between-access-modification-and-change-time-in-linux/#:~:text=Modification%20Time%3A%20is%20the%20time,name%2C%20number%20of%20hard%20links.
 # Modification Time: is the time when the contents of the file was last modified. For example, you used an editor to add new content or delete some existing content.
 # Change Time: is the time when the file’s inode has been changed. For example, by changing permissions, ownership, file name, number of hard links.
+# Usage: /bin/bash ./fs_functions.sh "path" 0|1
+# 0 indicates that path is non-root directory and 1 indicates that path is a root directory
 
 dirPath=$1
 isRoot=$2
@@ -24,7 +26,7 @@ then
     percentParent="100%"
 else
     pSize=`du -s $dirPath/.. 2>/dev/null | awk '{print $1}'`
-    echo $size,$pSize
+ #   echo $size,$pSize
     percentParent=$((100 * $size/$pSize ))
 fi
 fsOS=`uname`
