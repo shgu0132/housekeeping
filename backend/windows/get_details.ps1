@@ -14,3 +14,6 @@ $level=$Args[1]
 echo "Capacity,Path,Size,No Of Files,No of Directories,percent of Parent,Last Modified,Last Accessed,Owner"
 .\fs_functions.ps1 $dirPath 1
 $listing=(gci $dirPath -Depth $level).FullName
+foreach ($item in $listing) {
+    .\fs_functions.ps1 $item 0
+}
