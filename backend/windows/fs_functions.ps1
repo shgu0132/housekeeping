@@ -42,32 +42,48 @@ elseif ($pathType -like '?:')   {
 if ( (Test-Path -Path $dirPath -PathType Leaf) )    {
     $nFiles=1
     $nDirectories=0
+    $size=(Get-ChildItem $dirPath).Length
+    if ( $isRoot -eq 1 )    {
+        $percentParent="100"
+    }
+    else    {
+        $pSize=(Get-ChildItem $dirPath/.. -Recurse | Measure-Object Length -Sum).Sum
+        if ($pSize -like '')    {
+            $pSize = 0
+        }
+        # echo $size,$pSize
+        if ( $pSize -eq 0 ) {
+            $percentParent = 100
+        }
+        else    {
+            $percentParent=(100 * $size/$pSize)
+        }
+    }
 }
 elseif ( (Test-Path -Path $dirPath -PathType Container) )  {
     $nFiles=(Get-ChildItem -Recurse -File -Path $dirPath | Measure-Object).Count
     $nDirectories=(Get-ChildItem -Recurse -Directory -Path $dirPath | Measure-Object).Count
+    $size=(Get-ChildItem $dirPath -Recurse | Measure-Object Length -Sum).Sum
+    if ($size -like '') {
+        $size = 0
+    }
+    if ( $isRoot -eq 1 )    {
+        $percentParent="100"
+    }
+    else    {
+        $pSize=(Get-ChildItem $dirPath/.. -Recurse | Measure-Object Length -Sum).Sum
+        if ($pSize -like '')    {
+            $pSize = 0
+        }
+        # echo $size,$pSize
+        $percentParent=(100 * $size/$pSize)
+    }
 }
 else    {
     echo "$dirPath is not valid"
     exit 1
 }
-$size=(Get-ChildItem $dirPath -Recurse | Measure-Object Length -Sum).Sum
-if ($size -like '') {
-    $size = 0
-}
-if ( $isRoot -eq 1 )    {
-    $percentParent="100"
-}
-else    {
-    $pSize=(Get-ChildItem $dirPath/.. -Recurse | Measure-Object Length -Sum).Sum
-    if ($pSize -like '')    {
-        $pSize = 0
-    }
-    # echo $size,$pSize
-    $percentParent=(100 * $size/$pSize)
-}
 $lastModified=(Get-Item -Path $dirPath).LastWriteTime
 $lastAccessed=(Get-Item -Path $dirPath).LastAccessTime 
 $owner=(Get-ACL -Path $dirPath).Owner
-echo "Capacity,Path,Size,No Of Files,No of Directories,percent of Parent,Last Modified,Last Accessed,Owner"
 echo "$total,$dirPath,$size,$nFiles,$nDirectories,$percentParent,$lastModified,$lastAccessed,$owner"
