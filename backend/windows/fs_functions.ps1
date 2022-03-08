@@ -57,17 +57,22 @@ else    {
     exit 1
 }
 $size=(Get-ChildItem $dirPath -Recurse | Measure-Object Length -Sum).Sum
+if ($size -like '') {
+    $size = 0
+}
 if ( $isRoot -eq 1 )    {
-    $percentParent="100%"
+    $percentParent="100"
 }
 else    {
     $pSize=(Get-ChildItem $dirPath/.. -Recurse | Measure-Object Length -Sum).Sum
-    echo $size,$pSize
-    $percentParent=(100 * $size/$pSize )
+    if ($pSize -like '')    {
+        $pSize = 0
+    }
+    # echo $size,$pSize
+    $percentParent=(100 * $size/$pSize)
 }
 $lastModified=(Get-Item -Path $dirPath).LastWriteTime
 $lastAccessed=(Get-Item -Path $dirPath).LastAccessTime 
 $owner=(Get-ACL -Path $dirPath).Owner
 echo "Capacity,Path,Size,No Of Files,No of Directories,percent of Parent,Last Modified,Last Accessed,Owner"
 echo "$total,$dirPath,$size,$nFiles,$nDirectories,$percentParent,$lastModified,$lastAccessed,$owner"
- 
