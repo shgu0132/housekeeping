@@ -10,37 +10,48 @@
 
 dirPath=$1
 isRoot=$2
-
-size=`du -s $dirPath 2>/dev/null | awk '{print $1}'`
-if [[ -d $dirPath ]]; then
+#echo $dirPath,$isRoot
+size=`du -s "$dirPath" 2>/dev/null | awk '{print $1}'`
+if [[ -d "$dirPath" ]]; then
     fileType="Directory"
-    nFiles=`find $dirPath -type f -print 2>/dev/null| wc -l`
-    nDirectories=`find $dirPath -type d -print 2>/dev/null | wc -l`
-elif [[ -f $dirPath ]]; then
+    nFiles=`find "$dirPath" -type f -print 2>/dev/null| wc -l`
+    nDirectories=`find "$dirPath" -type d -print 2>/dev/null | wc -l`
+    if [ $isRoot -eq 1 ]
+    then
+        percentParent="100"
+    else
+        basePath=`dirname "$dirPath"`
+        pSize=`du -s "$basePath" 2>/dev/null | awk '{print $1}'`
+    #   echo $size,$pSize
+        percentParent=$((100 * $size/$pSize ))
+    fi    
+elif [[ -f "$dirPath" ]]; then
     fileType="File"
     nFiles=1
-    nDirectories=`find $dirPath -type d -print 2>/dev/null | wc -l`
+    nDirectories=0
+    if [ $isRoot -eq 1 ]
+    then
+        percentParent="100"
+    else
+        basePath=`dirname "$dirPath"`
+        pSize=`du -s "$basePath" 2>/dev/null | awk '{print $1}'`
+    #   echo $size,$pSize
+        percentParent=$((100 * $size/$pSize ))
+    fi
 else
     echo "$dirPath is not valid"
     exit 1
 fi
-if [ $isRoot -eq 1 ]
-then
-    percentParent="100"
-else
-    pSize=`du -s $dirPath/.. 2>/dev/null | awk '{print $1}'`
- #   echo $size,$pSize
-    percentParent=$((100 * $size/$pSize ))
-fi
+
 fsOS=`uname`
 if [ $fsOS != 'Linux' ]
 then
-    lastModified=`stat -f "%Sm" $dirPath`
-    lastAccessed=`stat -f "%Sa" $dirPath`
-    owner=`stat -f "%Su" $dirPath`
+    lastModified=`stat -f "%Sm" "$dirPath"`
+    lastAccessed=`stat -f "%Sa" "$dirPath"`
+    owner=`stat -f "%Su" "$dirPath"`
 else
-    lastModified=`stat --format="%y" $dirPath`
-    lastAccessed=`stat --format="%x" $dirPath`
-    owner=`stat --format="%U" $dirPath`
+    lastModified=`stat --format="%y" "$dirPath"`
+    lastAccessed=`stat --format="%x" "$dirPath"`
+    owner=`stat --format="%U" "$dirPath"`
 fi
 echo $dirPath,$fileType,$size,$nFiles,$nDirectories,$percentParent,$lastModified,$lastAccessed,$owner
