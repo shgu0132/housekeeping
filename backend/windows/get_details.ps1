@@ -11,7 +11,8 @@
 $dirPath=$Args[0]
 $level=$Args[1]
 
-echo "Capacity,Path,ItemType,Size,No Of Files,No of Directories,percent of Parent,Last Modified,Last Accessed,Owner"
+.\get_capacity.ps1 $dirPath
+echo "Path,ItemType,Size,No Of Files,No of Directories,percent of Parent,Last Modified,Last Accessed,Owner"
 .\fs_functions.ps1 $dirPath 1
 $listing=(gci $dirPath -Depth $level).FullName
 foreach ($item in $listing) {
