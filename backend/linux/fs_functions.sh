@@ -10,12 +10,14 @@
 
 dirPath=$1
 isRoot=$2
-capacity=`df -H $dirPath | grep / | awk '{print $2}'`
+
 size=`du -s $dirPath 2>/dev/null | awk '{print $1}'`
 if [[ -d $dirPath ]]; then
+    fileType="Directory"
     nFiles=`find $dirPath -type f -print 2>/dev/null| wc -l`
     nDirectories=`find $dirPath -type d -print 2>/dev/null | wc -l`
 elif [[ -f $dirPath ]]; then
+    fileType="File"
     nFiles=1
     nDirectories=`find $dirPath -type d -print 2>/dev/null | wc -l`
 else
@@ -41,5 +43,4 @@ else
     lastAccessed=`stat --format="%x" $dirPath`
     owner=`stat --format="%U" $dirPath`
 fi
-echo Capacity,Path,Size,No Of Files,No of Directories,percent of Parent,Last Modified,Last Accessed,Owner
-echo $capacity,$dirPath,$size,$nFiles,$nDirectories,$percentParent,$lastModified,$lastAccessed,$owner
+echo $dirPath,$fileType,$size,$nFiles,$nDirectories,$percentParent,$lastModified,$lastAccessed,$owner
