@@ -1,17 +1,19 @@
 BEGIN   { FS=",";
-          print "<html><head><style>table {font: 3ex gisha}"
-          print ".green {border: 2px solid green; color:green}"
-          print ".red {border: 2px solid red; color:red}"
-          print "td:first-child {width:150px}</style></head>"
-          print "<body><table width=500 border=2 cellspacing=2 cellpadding=2 border-collapse=collapse>"}
-NR == 1 { print "<tr bgcolor=\"#FAD7A0\">";
-          for ( i = 1; i <= NF; i++ ) print "<td><b>" $i "</b></td>"; 
-          print "</tr>"} 
-NR == 2 { print "<tr bgcolor=\"#FAD7A0\">";
-          for ( i = 1; i <= NF; i++ ) print "<td><b>" $i "</b></td>"; 
+          print "<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">"
+          print "<html xmlns="http://www.w3.org/1999/xhtml">"
+          print "<title>Usage Report</title>"
+          print "<link rel="stylesheet" type="text/css" href="file:///tmp/format.css" />"
+          print "</head><body>"}
+NR == 1 { print "<H1>";
+          for ( i = 1; i <= NF; i++ ) print $i ; 
+          print "</H1>"} 
+NR == 2 { print "<table>"
+          print "<colgroup><col/><col/><col/><col/><col/><col/><col/><col/><col/></colgroup>"
+          print "<tr>";
+          for ( i = 1; i <= NF; i++ ) print "<th>" $i "</th>"; 
           print "</tr>"}           
 NR > 2  { print "<tr>"; 
           for ( i = 1; i <= NF; i++ ) 
-            print "<td" (i==2? " class=" ($i=="Failure"?"red":"green"):"") ">" $i "</td>"; 
+            print "<td" (i==2? " class=" ($i=="Directory"?"green":"blue"):"") ">" $i "</td>"; 
           print "</tr>"}
-END     { print "</table></body></html>"}
+END     { print "</table><H5><i></i></H5></body></html>"}
