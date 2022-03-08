@@ -37,8 +37,8 @@ if ($pathType -like '\\')   {
     $status=$nwobj.removenetworkdrive($qualifier)
     # $status=Remove-PSDrive $driveLetter 
 }
-else if ($pathType -like '?:')   {
-    $driveLetter = $pathType
+elseif ($pathType -like '?:')   {
+    $driveLetter = $pathType.substring(0,1)
     $drive=Get-PSdrive $driveLetter
     $free=($drive.free)
     $used=($drive.used)
