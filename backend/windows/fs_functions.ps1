@@ -40,6 +40,7 @@ elseif ($pathType -like '?:')   {
     $total=($free+$used)    
 }
 if ( (Test-Path -Path $dirPath -PathType Leaf) )    {
+    $fileType="File"
     $nFiles=1
     $nDirectories=0
     $size=(Get-ChildItem $dirPath).Length
@@ -61,6 +62,7 @@ if ( (Test-Path -Path $dirPath -PathType Leaf) )    {
     }
 }
 elseif ( (Test-Path -Path $dirPath -PathType Container) )  {
+    $fileType="Directory"
     $nFiles=(Get-ChildItem -Recurse -File -Path $dirPath | Measure-Object).Count
     $nDirectories=(Get-ChildItem -Recurse -Directory -Path $dirPath | Measure-Object).Count
     $size=(Get-ChildItem $dirPath -Recurse | Measure-Object Length -Sum).Sum
@@ -86,4 +88,4 @@ else    {
 $lastModified=(Get-Item -Path $dirPath).LastWriteTime
 $lastAccessed=(Get-Item -Path $dirPath).LastAccessTime 
 $owner=(Get-ACL -Path $dirPath).Owner
-echo "$total,$dirPath,$size,$nFiles,$nDirectories,$percentParent,$lastModified,$lastAccessed,$owner"
+echo "$total,$dirPath,$fileType,$size,$nFiles,$nDirectories,$percentParent,$lastModified,$lastAccessed,$owner"
