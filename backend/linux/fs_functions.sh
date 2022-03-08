@@ -24,7 +24,7 @@ else
 fi
 if [ $isRoot -eq 1 ]
 then
-    percentParent="100%"
+    percentParent="100"
 else
     pSize=`du -s $dirPath/.. 2>/dev/null | awk '{print $1}'`
  #   echo $size,$pSize
