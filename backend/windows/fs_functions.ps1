@@ -17,7 +17,7 @@ ForEach($driveLetter in $driveletters){
 	if (Get-PSDrive $driveLetter -ErrorAction SilentlyContinue) {
     	Continue
 	} else {
-    	# $status=New-PSDrive -Name $driveLetter -PSProvider FileSystem -Root $dirPath
+    	$status=New-PSDrive -Name $driveLetter -PSProvider FileSystem -Root $dirPath
         $qualifier = $driveletter + ":"
 		$status=$nwobj.mapnetworkdrive($qualifier,$dirPath)
         Break
@@ -33,7 +33,7 @@ $total=($free+$used)
 # $totalGB=[math]::Round($total/1gb)
 # Write-Output "Share $dirPath has total space of $total bytes, free=$free bytes, used=$used bytes"
 $status=$nwobj.removenetworkdrive($qualifier)
-# $status=Remove-PSDrive $driveLetter 
+$status=Remove-PSDrive $driveLetter 
 
 if ( (Test-Path -Path $dirPath -PathType Leaf) )    {
     $nFiles=1
