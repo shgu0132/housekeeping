@@ -2,4 +2,4 @@
 
 dirPath=$1
 capacity=`df -H $dirPath | grep / | awk '{print $2}'`
-echo "Capcity=$capacity"
+echo "Capcity,$capacity"

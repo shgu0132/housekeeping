@@ -10,6 +10,10 @@
 
 dirPath=$1
 isRoot=$2
+if [ "$dirPath" = "$3" ]
+then
+    exit 0
+fi
 #echo $dirPath,$isRoot
 size=`du -s "$dirPath" 2>/dev/null | awk '{print $1}'`
 if [[ -d "$dirPath" ]]; then

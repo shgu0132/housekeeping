@@ -32,4 +32,4 @@ elseif ($pathType -like '?:')   {
     $used=($drive.used)
     $total=($free+$used)    
 }
-echo "Capcity=$total"
+echo "Capcity,$total"
