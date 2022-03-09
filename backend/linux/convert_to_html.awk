@@ -1,9 +1,10 @@
 BEGIN   { FS=",";
-          print "<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">"
-          print "<html xmlns="http://www.w3.org/1999/xhtml">"
+          print "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">"
+          print "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
           print "<title>Usage Report</title>"
-          print "<link rel="stylesheet" type="text/css" href="file:///tmp/format.css" />"
-          print "</head><body>"}
+          print "<link rel=\"stylesheet\" type=\"text/css\" href=\"format.css\" />"        
+          print "</head>"
+          print "<body>"}
 NR == 1 { print "<H1>";
           for ( i = 1; i <= NF; i++ ) print $i ; 
           print "</H1>"} 

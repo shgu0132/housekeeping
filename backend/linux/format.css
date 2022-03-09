@@ -12,6 +12,8 @@ h2 {
 font-family:Tahoma;
 color:#6D7B8D;
 }
+.green {border: 2px solid green; color:green}
+.blue {border: 2px solid blue; color:blue}
 .footer 
 { color:green; 
 margin-left:10px; 
