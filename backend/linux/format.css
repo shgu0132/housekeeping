@@ -3,7 +3,8 @@ body { background-color:#E5E4E2;
     font-size:10pt; }
 td, th { border:0px solid black; 
       border-collapse:collapse;
-      white-space:pre; }
+      white-space:pre;
+      text-align: left; }
 th { color:white;
   background-color:black; }
 table, tr, td, th { padding: 0px; margin: 0px ;white-space:pre; }

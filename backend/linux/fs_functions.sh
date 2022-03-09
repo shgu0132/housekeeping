@@ -16,6 +16,10 @@ then
 fi
 #echo $dirPath,$isRoot
 size=`du -s "$dirPath" 2>/dev/null | awk '{print $1}'`
+if [ "$size" = "" ]
+then
+    size=0
+fi
 if [[ -d "$dirPath" ]]; then
     fileType="Directory"
     nFiles=`find "$dirPath" -type f -print 2>/dev/null| wc -l`
@@ -27,7 +31,12 @@ if [[ -d "$dirPath" ]]; then
         basePath=`dirname "$dirPath"`
         pSize=`du -s "$basePath" 2>/dev/null | awk '{print $1}'`
     #   echo $size,$pSize
-        percentParent=$((100 * $size/$pSize ))
+        if [ "$pSize" = "0" ]
+        then
+            percentParent="100"
+        else
+            percentParent=$((100 * $size/$pSize ))
+        fi
     fi    
 elif [[ -f "$dirPath" ]]; then
     fileType="File"
@@ -40,7 +49,12 @@ elif [[ -f "$dirPath" ]]; then
         basePath=`dirname "$dirPath"`
         pSize=`du -s "$basePath" 2>/dev/null | awk '{print $1}'`
     #   echo $size,$pSize
-        percentParent=$((100 * $size/$pSize ))
+        if [ "$pSize" = "0" ]
+        then
+            percentParent="100"
+        else
+            percentParent=$((100 * $size/$pSize ))
+        fi    
     fi
 else
     echo "$dirPath is not valid"
@@ -58,4 +72,6 @@ else
     lastAccessed=`stat --format="%x" "$dirPath"`
     owner=`stat --format="%U" "$dirPath"`
 fi
-echo $dirPath,$fileType,$size,$nFiles,$nDirectories,$percentParent,$lastModified,$lastAccessed,$owner
+nFiles=`echo -n $nFiles | xargs`
+nDirectories=`echo -n $nDirectories | xargs`
+echo "$dirPath;$fileType;$size;$nFiles;$nDirectories;$percentParent;$lastModified;$lastAccessed;$owner"
