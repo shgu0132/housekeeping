@@ -30,6 +30,7 @@ elseif ($pathType -like '?:')   {
     $drive=Get-PSdrive $driveLetter
     $free=($drive.free)
     $used=($drive.used)
-    $total=($free+$used)    
+    $total=($free+$used)
+    $totalMB=$total/1MB    
 }
-echo "Capacity (MB),$(total)/1MB"
+echo "Capacity (MB),$totalMB"
