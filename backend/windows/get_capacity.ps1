@@ -31,6 +31,6 @@ elseif ($pathType -like '?:')   {
     $free=($drive.free)
     $used=($drive.used)
     $total=($free+$used)
-    $totalMB=$total/1MB    
+    $totalMB=[math]::Round($total/1MB)    
 }
 echo "Capacity (MB),$totalMB"
