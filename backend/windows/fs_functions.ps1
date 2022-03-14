@@ -56,4 +56,4 @@ else    {
 $lastModified=(Get-Item -Path $dirPath).LastWriteTime
 $lastAccessed=(Get-Item -Path $dirPath).LastAccessTime 
 $owner=(Get-ACL -Path $dirPath).Owner
-echo "$dirPath,$fileType,$size,$nFiles,$nDirectories,$percentParent,$lastModified,$lastAccessed,$owner"
+echo "$dirPath,$fileType,$size/1MB,$nFiles,$nDirectories,$percentParent,$lastModified,$lastAccessed,$owner"
