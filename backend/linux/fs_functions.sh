@@ -15,7 +15,7 @@ then
     exit 0
 fi
 #echo $dirPath,$isRoot
-size=`du -s "$dirPath" 2>/dev/null | awk '{print $1}'`
+size=`du -sm "$dirPath" 2>/dev/null | awk '{print $1}'`
 if [ "$size" = "" ]
 then
     size=0
@@ -29,7 +29,7 @@ if [[ -d "$dirPath" ]]; then
         percentParent="100"
     else
         basePath=`dirname "$dirPath"`
-        pSize=`du -s "$basePath" 2>/dev/null | awk '{print $1}'`
+        pSize=`du -sm "$basePath" 2>/dev/null | awk '{print $1}'`
     #   echo $size,$pSize
         if [ "$pSize" = "0" ]
         then
@@ -47,7 +47,7 @@ elif [[ -f "$dirPath" ]]; then
         percentParent="100"
     else
         basePath=`dirname "$dirPath"`
-        pSize=`du -s "$basePath" 2>/dev/null | awk '{print $1}'`
+        pSize=`du -sm "$basePath" 2>/dev/null | awk '{print $1}'`
     #   echo $size,$pSize
         if [ "$pSize" = "0" ]
         then
@@ -74,4 +74,8 @@ else
 fi
 nFiles=`echo -n $nFiles | xargs`
 nDirectories=`echo -n $nDirectories | xargs`
-echo "$dirPath;$fileType;$size;$nFiles;$nDirectories;$percentParent;$lastModified;$lastAccessed;$owner"
+# sizeMB=$(( $size / (1024) ))
+sizeMB=$size
+echo "$dirPath;$fileType;$sizeMB;$nFiles;$nDirectories;$percentParent;$lastModified;$lastAccessed;$owner"
+# TODO:
+# FIXME:
